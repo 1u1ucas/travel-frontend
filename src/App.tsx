@@ -1,18 +1,8 @@
-import { BrowserRouter, createBrowserRouter, Link, Route, RouterProvider, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import TravelList from "./components/travelList";
 import TravelSinglePage from "./components/travelSinglePage";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <TravelList />,
-  },
-  {
-    path:'/:id',
-    element: <TravelSinglePage/>,
-  }
-]);
 
 
 
