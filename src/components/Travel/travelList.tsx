@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TravelType } from '../types/travel.type';
+import { TravelType } from '../../types/travel.type';
 import TravelCard from './travelCard';
 
 
