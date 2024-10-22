@@ -22,10 +22,10 @@ import { useNavigate } from 'react-router-dom';
       };
 
     return (
-      <div className="bg-white shadow-md rounded-lg p-4 mb-4 w-96">
+      <div className="bg-white shadow-md rounded-lg p-4 mb-4 w-64">
         <h2 className="text-2xl font-bold mb-2">{travel.name}</h2>
         <p className="text-gray-600 mb-2">{travel.city}, {travel.country}</p>
-        <img src={travel.image} alt={travel.name} className="w-full h-auto rounded-md mb-2" />
+        <img src={travel.image} alt={travel.name} className="w-full h-44 rounded-md mb-2" />
         <p className="text-gray-700">{travel.description}</p>
         <div>
         <button 

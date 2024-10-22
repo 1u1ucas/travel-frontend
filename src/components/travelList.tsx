@@ -14,10 +14,17 @@ function TravelList() {
     }, [])
   
     const fetchTravels = async () => {
-      const response = await fetch('http://localhost:5174/travels.json')
-      const data = await response.json()
-      setTravelList(data)
-    }
+        try {
+          const response = await fetch('http://localhost:8000/travels');
+          if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des trajets');
+          }
+          const data = await response.json();
+          setTravelList(data);
+        } catch (error) {
+          console.error('Erreur lors de la récupération des trajets:', error);
+        }
+      };
 
     return (
         <>

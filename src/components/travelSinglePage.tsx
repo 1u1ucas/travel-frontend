@@ -9,7 +9,7 @@ function TravelSinglePage   () {
 
   useEffect(() => {
     const fetchTravel = async () => {
-      const response = await fetch(`http://localhost:5174/travels.json`);
+      const response = await fetch(`http://localhost:8000/travels`);
       const data = await response.json();
       setTravels(data);
     };
