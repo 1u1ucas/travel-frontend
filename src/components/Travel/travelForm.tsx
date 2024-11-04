@@ -15,25 +15,30 @@ function TravelForm() {
         });
       };
     
-      const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        try {
-          const response = await fetch('http://localhost:8000/travels', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            throw new Error('Failed to create travel');
+        const handleSubmit = async (e: React.FormEvent) => {
+          e.preventDefault();
+          try {
+            const response = await fetch('http://localhost:8000/travels', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+      
+            if (!response.ok) {
+              throw new Error('Failed to create travel');
+            }
+      
+            // Handle successful travel creation
+            console.log('Travel created successfully');
+          } catch (err) {
+            if (err instanceof Error) {
+              console.log(formData);
+              console.error('Failed to create travel:', err);
+            }
           }
-          window.location.href = '/';
-        } catch (error) {
-          console.error('Failed to create travel:', error);
-        }
-      };
+        };
     
       return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
@@ -124,3 +129,4 @@ function TravelForm() {
     };
     
     export default TravelForm;
+
