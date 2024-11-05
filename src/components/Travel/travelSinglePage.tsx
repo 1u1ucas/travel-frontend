@@ -92,10 +92,10 @@ function TravelSinglePage   () {
       </div>
       { editingTravel.id === travel.id ? (
         <div className="bg-white shadow-md rounded-lg p-4 w-96">
-          <input type="text" name="name" value={travel.name} onChange={handleChange} className="text-2xl font-bold mb-2"/>
-          <input type="text" name="city" value={travel.city} onChange={handleChange} className="text-gray-600 mb-2"/>
-          <input type="text" name="country" value={travel.country} onChange={handleChange} className="text-gray-600 mb-2"/>
-          <img src={travel.image} alt={travel.name} className="w-full h-auto rounded-md mb-2" />
+          <input type="text" name="name" value={editingTravel.name} onChange={handleChange} className="text-2xl font-bold mb-2"/>
+          <input type="text" name="city" value={editingTravel.city} onChange={handleChange} className="text-gray-600 mb-2"/>
+          <input type="text" name="country" value={editingTravel.country} onChange={handleChange} className="text-gray-600 mb-2"/>
+          <img src={editingTravel.image} alt={editingTravel.name} className="w-full h-auto rounded-md mb-2" />
           <input
             type="text"
             name="description"
