@@ -1,9 +1,9 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+  import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import TravelList from "./components/Travel/travelList";
 import TravelSinglePage from "./components/Travel/travelSinglePage";
-import SignUp from "./components/User/signUp";
 import TravelForm from "./components/Travel/travelForm";
+import CategoryForm from "./components/Travel/categoryForm";
 
 
 
@@ -11,7 +11,7 @@ import TravelForm from "./components/Travel/travelForm";
 
 
 function App() {
-
+  
 
 
 
@@ -25,16 +25,16 @@ function App() {
         <Link to="/travel-form" className="text-blue-500 hover:text-blue-700 font-bold text-lg ml-4">
         Create Travel
         </Link>
-        <Link to="/sign-up" className="text-blue-500 hover:text-blue-700 font-bold text-lg ml-4">
-          Sign Up
+        <Link to="/category-form" className="text-blue-500 hover:text-blue-700 font-bold text-lg ml-4">
+        Create Category
         </Link>
       </nav>
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
     <Routes>
       <Route path="/" element={<TravelList />} />
       <Route path="/:id" element={<TravelSinglePage  />} />
-      <Route path="/sign-up" element={<SignUp />} />
       <Route path="/travel-form" element={<TravelForm />} />
+      <Route path="/category-form" element={<CategoryForm />} />
     </Routes>
     </div>
   </BrowserRouter>

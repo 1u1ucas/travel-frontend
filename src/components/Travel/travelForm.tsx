@@ -1,43 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TravelType } from "../../types/travel.type";
+import { CategoryType } from "../../types/category.type";
+import { createTravel } from "../../service/travel.service";
+import { findAllCategory } from "../../service/category.service";
 
 
 
 
 function TravelForm() {
     const [formData, setFormData] = useState<Partial<TravelType>>({});
+    const [categories, setCategories] = useState<CategoryType[]>([]);
+
+    useEffect( () => {
+      findAllCategory()
+      .then((res) => {
+        setCategories(res);
+      })
+    }, [])
     
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement |HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({
           ...formData,
           [name]: value,
+          
         });
+        console.log(formData) 
       };
     
-        const handleSubmit = async (e: React.FormEvent) => {
-          e.preventDefault();
-          try {
-            const response = await fetch('http://localhost:8000/travels', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(formData),
-            });
-      
-            if (!response.ok) {
-              throw new Error('Failed to create travel');
-            }
-      
-            // Handle successful travel creation
-            console.log('Travel created successfully');
-          } catch (err) {
-            if (err instanceof Error) {
-              console.log(formData);
-              console.error('Failed to create travel:', err);
-            }
-          }
+        const handleSubmit = async () => {
+          createTravel(formData as TravelType);
         };
     
       return (
@@ -114,6 +106,27 @@ function TravelForm() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required
               />
+              
+            </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category_id">
+                Category
+              </label>
+              <select
+                id="category_id"
+                name="category_id"
+                value={formData.category_id}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="">Select a category</option>
+                {categories.map((category: CategoryType) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              
             </div>
             <div className="flex items-center justify-between">
               <button

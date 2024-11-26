@@ -2,22 +2,29 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TravelType } from '../../types/travel.type';
 import Button from '../ui/Button';
+import { findOneByIdTravel, removeTravel, updateTravel } from '../../service/travel.service';
+import { findAllCategory } from '../../service/category.service';
+import { CategoryType } from '../../types/category.type';
+import CommentForm from '../comment/comment_form';
+import CommentList from '../comment/comment_by_travel';
+
 
 
 function TravelSinglePage   () {
   const { id } = useParams<{ id: string }>();
   const [travel, setTravel] = useState<Partial<TravelType>>({});
   const [editingTravel, setEditingTravel] = useState<Partial<TravelType>>({});
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    const fetchTravel = async () => {
-      const response = await fetch(`http://localhost:8000/travels/${id}`);
-      const data = await response.json();
+    findOneByIdTravel(id).then((data) => {
       setTravel(data);
-    };
+    })
 
-    fetchTravel();
-  }, []);
+    findAllCategory().then((data) => {
+      setCategories(data);
+    });
+  }, [id]);
 
   if (!travel) {
     return <div>Loading...</div>;
@@ -41,44 +48,23 @@ function TravelSinglePage   () {
   };
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement |HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEditingTravel((prev) => ({ ...prev, [name]: value }));
   };
 
 
   const handleSave = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/travels/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editingTravel),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to save travel');
-      }
-      const data = await response.json();
-      setTravel(data);
-      setEditingTravel({});
-    } catch (error) {
-      console.error('Failed to save travel:', error);
-    }
+   updateTravel(id, editingTravel as TravelType);
+   setTravel(editingTravel);
+   setEditingTravel({});
+   
   };
 
   const handleDelete = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/travels/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete travel');
-      }
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Failed to delete travel:', error);
-    }
+
+    removeTravel(id);
+    window.location.href = '/';
   }
 
   return (
@@ -103,6 +89,24 @@ function TravelSinglePage   () {
             onChange={handleChange}
             className="w-full h-12 rounded-md mb-2"
           />
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category_id">
+                Category
+              </label>
+              <select
+                id="category_id"
+                name="category_id"
+                value={categories.id}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="">Select a category</option>
+                {categories.map((category: CategoryType) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
           <Button type='button' onClick={handleSave} variant="primary" text='Save'/>
         </div>
                 
@@ -113,7 +117,10 @@ function TravelSinglePage   () {
             <p className="text-gray-600 mb-2">{travel.city}, {travel.country}</p>
             <img src={travel.image} alt={travel.name} className="w-full h-auto rounded-md mb-2" />
             <p className="text-gray-700">{travel.description}</p>
+            <CommentForm/>
+            <CommentList/>
         </div>)}
+
     </div>
   );
 };

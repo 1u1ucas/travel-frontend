@@ -5,4 +5,5 @@ export type TravelType = {
     country: string,
     image: string,
     description: string,
+    category_id: number,
 }
